@@ -15,8 +15,8 @@
 /////////Servo Steurung
 Servo servoctl;
 
-const char* ssid = "BlackMesa";
-const char* password = "%W3!n$ch3nk33!";
+const char* ssid = "SSID";
+const char* password = "password";
 int ModbusTCP_port = 502;
 
 //////// Required for Modbus TCP / IP 
