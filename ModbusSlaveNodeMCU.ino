@@ -12,7 +12,7 @@
 #include <WiFiServerSecure.h>
 #include <WiFiUdp.h>
 
-/////////Servo Steurung
+/////////Servo Steurung by Tony
 Servo servoctl;
 
 const char* ssid = "SSID";

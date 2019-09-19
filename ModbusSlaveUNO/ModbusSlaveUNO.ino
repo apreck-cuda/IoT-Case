@@ -35,7 +35,7 @@ byte gateway[] = { 10, 10, 5, 254 };
 byte subnet[] = { 255, 255, 255, 0 };
 ///////////////////
 
-////Modbus configuratiuon:
+////Modbus configuratiuon: My Modbus
 
 int ModbusTCP_port = 502;
 //////// Required for Modbus TCP / IP 
