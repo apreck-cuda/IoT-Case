@@ -104,35 +104,7 @@ sensor:
   # Weather prediction
   # Weather prediction
   # - platform: yr
-# SSH Sensor VPN
 
-  # - platform: ssh
-    # name: VPN con
-    # host: 10.10.3.20
-    # username: root
-    # password: Demo-123
-    # command: 'sh /root/vpnstate.sh'
-    # value_tamplate: states.sensor.vpn_con.state
-      # {% 'DOWN' in states.sensor.vpn_con.state %}
-
-
-# states('sensor.vpn_con.state')
-  # - platform: ssh    
-    # name: RULE remote
-    # host: 10.10.3.1
-    # username: root
-    # password: Demo-123
-    # command: 'sh /root/remoteaccess.sh'
-    # value: states.sensor.rule_remote
-
-  # - platform: ssh    
-    # name: MODBUS block
-    # host: 10.10.3.1
-    # username: root
-    # password: Demo-123
-    # command: 'sh /root/modbus.sh'
-    # value: states('sensor.modbus_block')
-      # {% 'Enabled' in states.sensor.modbus_block.state %}   
 ##Random generated Values "Reading Registers"
   # Modbus Sensor Reading Register
   - platform: modbus
