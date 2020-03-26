@@ -10,15 +10,15 @@ https://www.barracuda.com/products/cloudgenfirewall/use_cases/internet-of-things
 ## Topology
 This topology applies to the setup, while the Wind turbine PLC is connected to Secure Connector and through VPN to HQ the Remote access and Protocol Enforcement is performed on the HQ Firewall
 
- ![](./images/Network.PNG)
+ ![](/images/Network.PNG)
 
  ## Arduino PLC
  Is used to send and receive the Modbus commands. It includes the Network shield and MotorShield to control the turbine and turbine lights. 
- ![](./images/MotorShild.PNG)
+ ![](/images/MotorShild.PNG)
 
 ## Light Controls
 The light is controlled by the (HMI) HomeAssistant. The commands are send via MQTT to the NodeMCU.
 The status of VPN or Access Rule for remote control are queried from the Firewall via API "###API Calls for Light Control"
- ![](./images/NodeMCU.PNG)
+ ![](/images/NodeMCU.PNG)
 
 For any question please contact iot_cgf_team@barracuda.com
