@@ -1,0 +1,203 @@
+- id: '1550353060771'
+  alias: modbus_run_CW
+  trigger:
+  - entity_id: input_number.slider1
+    platform: state
+  condition:
+  - above: '81'
+    below: '255'
+    condition: numeric_state
+    entity_id: input_number.slider1
+  action:
+  - data_template:
+      hub: mod1
+      address: 10
+      unit: 255
+      value:
+      - '{{states.input_number.slider1.state | int }}'
+      - 0
+      - '{{states.input_number.slider1.state | int }}'
+    service: modbus.write_register
+- id: '1550353142603'
+  alias: modbus_CW_stop
+  trigger:
+  - entity_id: input_number.slider1
+    platform: state
+  condition:
+  - above: '77'
+    below: '80'
+    condition: numeric_state
+    entity_id: input_number.slider1
+  action:
+  - data:
+      hub: mod1
+      address: 10
+      unit: 255
+      value:
+      - 0
+      - 0
+      - 0
+    service: modbus.write_register
+- id: ModrunACW
+  alias: modbus_run_ACW
+  trigger:
+  - entity_id: input_number.slider2
+    platform: state
+  condition:
+  - above: '81'
+    below: '255'
+    condition: numeric_state
+    entity_id: input_number.slider2
+  action:
+  - data_template:
+      hub: mod1
+      address: 10
+      unit: 255
+      value:
+      - 0
+      - '{{states.input_number.slider2.state | int }}'
+    service: modbus.write_register
+- id: ModStop
+  alias: modbus_ACW_stop
+  trigger:
+  - entity_id: input_number.slider2
+    platform: state
+  condition:
+  - above: '77'
+    below: '80'
+    condition: numeric_state
+    entity_id: input_number.slider2
+  action:
+  - data:
+      hub: mod1
+      address: 10
+      unit: 255
+      value:
+      - 0
+      - 0
+    service: modbus.write_register
+- id: Light Animation
+  alias: Outdoor Kitchen LED
+  initial_state: true
+  hide_entity: false
+  trigger:
+  - platform: state
+    entity_id: input_number.light_animation_speed
+  action:
+  - service: mqtt.publish
+    data_template:
+      topic: cuda/light/set
+      payload: '{"transition":{{ trigger.to_state.state | int }}}'
+- id: '1554059613305'
+  alias: Remote_Off
+  trigger:
+  - entity_id: sensor.remote_access_enabled
+    from: enable
+    platform: state
+    to: none
+  condition: []
+  action:
+  - alias: ''
+    data: {}
+    entity_id: light.light_remote
+    service: light.turn_off
+- id: '1554059817320'
+  alias: Remote_Access_on
+  trigger:
+  - entity_id: sensor.remote_access_enabled
+    platform: state
+    to: enable
+  condition:
+  - condition: state
+    entity_id: sensor.modus_write_bloked
+    state: none
+  action:
+  - data:
+      effect: solid
+      rgb_color:
+      - 7
+      - 21
+      - 255
+    entity_id: light.light_remote
+    service: light.turn_on
+- id: '1554065684827'
+  alias: VPN-On
+  trigger:
+  - entity_id: sensor.vpn_state
+    platform: state
+    to: Up
+  condition: []
+  action:
+  - data:
+      effect: solid
+      entity_id: light.light_vpn
+      rgb_color:
+      - 7
+      - 21
+      - 255
+    service: light.turn_on
+- id: '1554066122739'
+  alias: VPN_off
+  trigger:
+  - entity_id: sensor.vpn_state
+    from: Up
+    platform: state
+    to: Fail
+  condition: []
+  action:
+  - data:
+      effect: solid
+      entity_id: light.light_vpn
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    service: light.turn_on
+- id: '1554224855078'
+  alias: Modbus_block ON
+  trigger:
+  - entity_id: sensor.modus_write_bloked
+    platform: state
+    to: enable
+  condition: []
+  action:
+  - data:
+      effect: juggle
+      entity_id: light.light_remote
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    service: light.turn_on
+- id: '1554224920478'
+  alias: Modbus_OFF
+  trigger:
+  - entity_id: sensor.modus_write_bloked
+    from: enable
+    platform: state
+    to: none
+  condition: []
+  action:
+  - data:
+      entity_id: light.light_remote
+    service: light.turn_off
+- id: '1554658812169'
+  alias: Modbus_off_Remote
+  trigger:
+  - entity_id: sensor.modus_write_bloked
+    from: enable
+    platform: state
+    to: none
+  condition:
+  - condition: state
+    entity_id: sensor.remote_access_enabled
+    state: enable
+  action:
+  - data:
+      effect: solid
+      rgb_color:
+      - 7
+      - 21
+      - 255
+    entity_id: light.light_remote
+    service: light.turn_on

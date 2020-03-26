@@ -1,0 +1,362 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 0
+  longitude: 0
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 0
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: Europe/Vienna
+  # Customization file
+  customize: !include customize.yaml
+
+# Show links to resources in log and frontend
+#introduction:
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+###External Blocks
+#group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+# MQTT server Setup
+mqtt:
+  broker: 10.10.3.200
+  port: 1883
+  client_id: home-assistant-1
+  username: iot
+  password: <password>
+
+# Modbus connection configuration
+
+modbus:
+  name: mod1
+  type: tcp
+  host: 10.10.5.110
+  port: 502
+# Sensors
+sensor:
+
+  - platform: command_line
+    command: 'curl -X GET "http://10.10.3.20:8080/rest/vpn/v1/tunnels/FW2FW-2-IoT-Cluster-IoT-FSC25-Demo?envelope=true" -H "accept: application/json" -H "X-API-Token: vCQkezHMkn7Pok0LfHC0vaaBMt37S9ww"'
+    name: VPN State
+    json_attributes:
+    - result
+    value_template: '{{ states.sensor.vpn_state.attributes["result"]["transport_status"] }}'
+    scan_interval: 2
+    command_timeout: 30
+
+  - platform: command_line
+    command: 'curl -X GET "http://10.10.3.1:8080/rest/firewall/v1/forwarding-firewall/rules/dynamic/Remote-Access?envelope=true" -H "accept: */*" -H "X-API-Token: vCQkezHMkn7Pok0LfHC0vaaBMt37S9ww"'
+    name: Remote Access Enabled
+    json_attributes:
+    - result
+    value_template: '{{ states.sensor.remote_access_enabled.attributes["result"]["action"] }}'
+    scan_interval: 2
+    command_timeout: 30
+
+  - platform: command_line
+    command: 'curl -X GET "http://10.10.3.1:8080/rest/firewall/v1/forwarding-firewall/rules/dynamic/lists/<App>/BlockModbusWrite?envelope=true" -H "accept: */*" -H "X-API-Token: vCQkezHMkn7Pok0LfHC0vaaBMt37S9ww"'
+    name: Modus Write Bloked
+    json_attributes:
+    - result
+    value_template: '{{ states.sensor.modus_write_bloked.attributes["result"]["action"] }}'
+    scan_interval: 2
+    command_timeout: 30
+  # Weather prediction
+  # Weather prediction
+  # - platform: yr
+# SSH Sensor VPN
+
+  # - platform: ssh
+    # name: VPN con
+    # host: 10.10.3.20
+    # username: root
+    # password: Demo-123
+    # command: 'sh /root/vpnstate.sh'
+    # value_tamplate: states.sensor.vpn_con.state
+      # {% 'DOWN' in states.sensor.vpn_con.state %}
+
+
+# states('sensor.vpn_con.state')
+  # - platform: ssh    
+    # name: RULE remote
+    # host: 10.10.3.1
+    # username: root
+    # password: Demo-123
+    # command: 'sh /root/remoteaccess.sh'
+    # value: states.sensor.rule_remote
+
+  # - platform: ssh    
+    # name: MODBUS block
+    # host: 10.10.3.1
+    # username: root
+    # password: Demo-123
+    # command: 'sh /root/modbus.sh'
+    # value: states('sensor.modbus_block')
+      # {% 'Enabled' in states.sensor.modbus_block.state %}   
+
+  # Modbus Sensor Reading Register
+  - platform: modbus
+    #scan_interval: 5
+    registers:
+    - name: Temp_Inside
+      hub: mod1
+      #icon: mdi:engine
+      unit_of_measurement: °C
+      slave: 1
+      register: 0
+    - name: Illumination
+#      scan_interval: 1
+      hub: mod1
+      unit_of_measurement: ln
+      register_type: holding
+      slave: 1
+      register: 1
+    - name: Oil_pressure
+#      scan_interval: 1
+      hub: mod1
+      unit_of_measurement: bar
+      register_type: holding
+      slave: 1
+      register: 2
+    - name: RPM_Left
+ #     scan_interval: 1
+      hub: mod1
+      unit_of_measurement: RPM
+      register_type: holding
+      slave: 1
+      register: 10
+    - name: RPM_Right
+#      scan_interval: 1
+      hub: mod1
+      unit_of_measurement: RPM
+      register_type: holding
+      slave: 1
+      register: 11
+    - name: Temp_Oil
+#      scan_interval: 1
+      hub: mod1
+      unit_of_measurement: °C
+      register_type: holding
+      slave: 1
+      register: 3
+    - name: Voltage
+#      scan_interval: 1
+      hub: mod1
+      unit_of_measurement: V
+      register_type: holding
+      slave: 1
+      register: 5
+    - name: Current
+#      scan_interval: 1
+      hub: mod1
+      unit_of_measurement: A
+      register_type: holding
+      slave: 1
+      register: 4
+    - name: Consumtion
+#      scan_interval: 1
+      hub: mod1
+      unit_of_measurement: W
+      register_type: holding
+      slave: 1
+      register: 6
+    - name: Power_Generation
+#      scan_interval: 1
+      hub: mod1
+      unit_of_measurement: kWh
+      register_type: holding
+      slave: 1
+      register: 7
+    - name: Ex_Voltage
+#      scan_interval: 1
+      hub: mod1
+      unit_of_measurement: V
+      register_type: holding
+      slave: 1
+      register: 8
+
+
+#Swiches
+switch:
+  platform: modbus
+  registers:
+    - name: Left_fast
+      hub: mod1
+      slave: 1
+      register: 10
+      command_on: 255
+      command_off: 0
+    - name: Right_fast
+      hub: mod1
+      slave: 1
+      register: 11
+      command_on: 255
+      command_off: 0
+      
+#Inputs
+input_number:
+  slider1:
+    name: Windmill clockwise
+    initial: 79
+    min: 78
+    max: 255
+    step: 1
+  slider2:
+    name: Windmill Anti-clockwise
+    initial: 79
+    min: 78
+    max: 255
+    step: 1
+  light_animation_speed:
+    name: Light Animation
+    initial: 150
+    min: 1
+    max: 150
+    step: 10
+    
+#Ligts and VPN
+
+light:
+  - platform: mqtt
+    schema: json
+    name: "Light Case"
+    effect: true
+    effect_list:
+      - bpm
+      - candy cane  
+      - confetti  
+      - cyclon rainbow  
+      - dots  
+      - fire  
+      - glitter  
+      - juggle  
+      - lightning
+      - noise  
+      - police all  
+      - police one  
+      - rainbow  
+      - rainbow with glitter  
+      - ripple  
+      - sinelon  
+      - solid  
+      - twinkle  
+    brightness: true
+#    flash: true
+    rgb: true
+    state_topic: "cuda/light"
+    command_topic: "cuda/light/set"
+    optimistic: false
+    qos: 0
+ 
+  - platform: mqtt
+    schema: json
+    name: "Light VPN"
+    effect: true
+    effect_list:
+      - bpm
+      - candy cane  
+      - confetti  
+      - cyclon rainbow  
+      - dots  
+      - fire  
+      - glitter  
+      - juggle  
+      - lightning
+      - noise  
+      - police all  
+      - police one  
+      - rainbow  
+      - rainbow with glitter  
+      - ripple  
+      - sinelon  
+      - solid  
+      - twinkle  
+    brightness: true
+#    flash: true
+    rgb: true
+    state_topic: "cuda/vpn"
+    command_topic: "cuda/vpn/set"
+    optimistic: false
+    qos: 0
+
+  - platform: mqtt
+    schema: json
+    name: "Light Remote"
+    effect: true
+    effect_list:
+      - bpm
+      - candy cane  
+      - confetti  
+      - cyclon rainbow  
+      - dots  
+      - fire  
+      - glitter  
+      - juggle  
+      - lightning
+      - noise  
+      - police all  
+      - police one  
+      - rainbow  
+      - rainbow with glitter  
+      - ripple  
+      - sinelon  
+      - solid  
+      - twinkle  
+    brightness: true
+#    flash: true
+    rgb: true
+    state_topic: "cuda/remote"
+    command_topic: "cuda/remote/set"
+    optimistic: false
+    qos: 0
+# Input Animation speed Light
+
+# Text to speech
+tts:
+  - platform: google_translate
+    service_name: google_say
+
+# Cloud
+cloud:
+
+

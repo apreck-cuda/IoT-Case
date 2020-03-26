@@ -1,0 +1,10 @@
+'1550336503095':
+  alias: Motorrunt test
+  sequence:
+  - data:
+      address: 10
+      unit: 255
+      value:
+      - 90
+      - 0
+    service: modbus.write_register

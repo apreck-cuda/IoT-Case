@@ -1,0 +1,67 @@
+# Each entitty need to be customized
+
+####Small WindMill Motor
+  switch.left_fast:
+    friendly_name: Full Speed
+    icon: mdi:fan
+
+  switch.right_fast:
+    friendly_name: Full speed
+    icon: mdi:fan
+  input_number.slider1:
+    friendly_name: Rotation speed Production
+    icon: mdi:fan
+  input_number.slider2:
+    friendly_name: Rotation speed Maintenance
+    icon: mdi:fan
+    
+###Sensors
+  sensor.temp_inside:
+    friendly_name: Temperature Inside
+  sensor.illumination:
+    friendly_name: Illumination
+    icon: mdi:lighthouse-on
+  sensor.oil_pressure:
+    icon: mdi:oil
+    friendly_name: Oil pressure
+  sensor.rpm_left:
+    icon: mdi:engine-outline
+    friendly_name: RPM-Clockwise
+  sensor.rpm_right:
+    icon: mdi:engine-outline
+    friendly_name: RPM-Anti-Clockwise
+  sensor.temp_oil:
+    icon: mdi:oil-temperature
+    friendly_name: Oil Temprature
+  sensor.voltage:
+    icon: mdi:flash
+    friendly_name: Voltage
+  sensor.current:
+    icon: mdi:flash-circle
+    friendly_name: Current-AC
+  sensor.consumtion:
+    icon: mdi:power-socket-eu
+    friendly_name: Power Consumption
+  sensor.power_generation:
+    icon: mdi:current-ac
+    friendly_name: Power Generation
+  sensor.ex_voltage:
+    icon: mdi:current-dc
+    friendly_name: Excitation Voltage
+    
+####Cuda_Sensors
+  sensor.vpn_con:
+    friendly_name: VPN Connection
+  sensor.rule_remote:
+    friendly_name: Remote Access
+  sensor.modbus_block:
+    friendly_name: Block Modbus
+    
+####Hidden Entities
+  media_player.wohnzimmer_apple_tv:
+    hidden: true
+  remote.wohnzimmer_apple_tv:
+    hidden: true
+  sun.sun:
+    hidden: true
+  

@@ -1,0 +1,67 @@
+#This contains Groups (View and Groups)
+#==========Views=========
+default_view:
+  name: Wind-turbine
+  view: yes
+  entities:
+    - group.windmill_left
+    - group.windmill_right
+    - group.sensors_windmill
+#
+light_view:
+  name: Light
+  view: yes
+  entities:
+    - group.light_group   
+    - group.light_vpn
+    - group.firewall_state
+    
+
+####Groups######
+windmill_left:
+  name: Wind-turbine Production
+  entities:
+    - switch.left_fast
+    - input_number.slider1
+ 
+windmill_right:
+  name: Wind-turbine Maintenance
+  entities:
+    - switch.right_fast
+    - input_number.slider2
+
+light_group:
+  name: Light Control
+  entities:
+    - light.light_case
+    - input_number.light_animation_speed
+
+light_VPN:
+  name: VPN Control
+  entities:
+    - light.light_vpn
+    - light.light_remote
+    
+firewall_state:
+  name: Firewall State
+  entities:
+    - sensor.vpn_con
+    - sensor.rule_remote
+    - sensor.modbus_block
+####Sensors
+sensors_windmill:
+  name: Windmill Conditions
+  entities:
+    - sensor.temp_inside
+    - sensor.illumination
+    - sensor.oil_pressure
+    - sensor.rpm_left
+    - sensor.rpm_right
+    - sensor.temp_oil
+    - sensor.voltage
+    - sensor.current
+    - sensor.consumtion
+    - sensor.power_generation
+    - sensor.ex_voltage
+    
+   
