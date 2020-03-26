@@ -74,7 +74,7 @@ modbus:
   port: 502
 # Sensors
 sensor:
-
+###API Calls for Light Control
   - platform: command_line
     command: 'curl -X GET "http://10.10.3.20:8080/rest/vpn/v1/tunnels/FW2FW-2-IoT-Cluster-IoT-FSC25-Demo?envelope=true" -H "accept: application/json" -H "X-API-Token: vCQkezHMkn7Pok0LfHC0vaaBMt37S9ww"'
     name: VPN State
@@ -133,7 +133,7 @@ sensor:
     # command: 'sh /root/modbus.sh'
     # value: states('sensor.modbus_block')
       # {% 'Enabled' in states.sensor.modbus_block.state %}   
-
+##Random generated Values "Reading Registers"
   # Modbus Sensor Reading Register
   - platform: modbus
     #scan_interval: 5
