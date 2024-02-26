@@ -21,4 +21,3 @@ The light is controlled by the (HMI) HomeAssistant. The commands are send via MQ
 The status of VPN or Access Rule for remote control are queried from the Firewall via API "###API Calls for Light Control" from Homeassitent --> configuration.yaml. The Ardurino code for NodeMCU is availible in "LEDStips V1-ino"
  ![](/images/NodeMCU.PNG)
 
-For any question please contact iot_cgf_team@barracuda.com
